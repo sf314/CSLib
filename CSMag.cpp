@@ -32,9 +32,7 @@ void CSMag::config()
     Wire.beginTransmission(magaddress); // transmit to device 0x0E
     Wire.write(0x11);              // cntrl register2
     Wire.write(0x80);              // send 0x80, enable auto resets
-    Serial.println("CSMag::config() Ending transmission");
     Wire.endTransmission();       // stop transmitting
-    Serial.println("CSMag::config() Ended transmission!!!!!");
 
     delay(15);
 
