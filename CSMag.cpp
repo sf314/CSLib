@@ -26,21 +26,25 @@ int CSMag::magaddress = 0x0E; // Changed from a byte to an int (got rid of reque
 int CSMag::initX = 0;
 int CSMag::initY = 0;
 int CSMag::initZ = 0;
+bool CSMag::debugMode = false; // override this in setup() to debug
 
 void CSMag::config()
 {
+    debug("CSMag.config():");
+    debug("\tEnabling auto-resets");
     Wire.beginTransmission(magaddress); // transmit to device 0x0E
     Wire.write(0x11);              // cntrl register2
     Wire.write(0x80);              // send 0x80, enable auto resets
     Wire.endTransmission();       // stop transmitting
 
     delay(15);
-
+    
+    debug("\tSetting to active mode");
     Wire.beginTransmission(magaddress); // transmit to device 0x0E
     Wire.write(0x10);              // cntrl register1
     Wire.write(1);                 // send 0x01, active mode
     Wire.endTransmission();       // stop transmitting
-    
+
     delay(15);
     calibrate(); // I am dumb
 }
@@ -155,34 +159,44 @@ void CSMag::calibrate() {
     // Find average
     // Set the value of initN to that.
     
+    debug("CSMag.calibrate():");
+
     int xSample[20];
     int ySample[20];
     int zSample[20];
-    
+
+    debug("\tSampling 20 times");
     for (int i = 0; i < 20; i++) { // Take 20 readings
         xSample[i] = readx();
         ySample[i] = ready();
         zSample[i] = readz();
     }
-    
+
+    debug("\tFinding averages");
     int sum = 0;
     for (int i = 0; i < 20; i++) { // Find average of X
         sum = sum + xSample[i];
     }
     initX = sum / 20;
-    
+
     sum = 0;
     for (int i = 0; i < 20; i++) { // Find average of Y
         sum = sum + ySample[i];
     }
     initY = sum / 20;
-    
+
     sum = 0;
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 20; i++) { // Find average of Z
         sum = sum + zSample[i];
     }
     initZ = sum / 20;
-    
-    
+
+
     // Adjusted values are taken into account during the return statement of readn()
+}
+
+void CSMag::debug(String s) {
+    if(debugMode) {
+        Serial.println(s);
+    }
 }

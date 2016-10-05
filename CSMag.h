@@ -12,6 +12,7 @@
 
 class CSMag {
 public:
+    bool debugMode;
     void config();
     int readx();
     int ready();
@@ -20,6 +21,7 @@ public:
 private:
     static int magaddress;
     void calibrate();
+    void debug(String s);
     static int initX;
     static int initY;
     static int initZ;
