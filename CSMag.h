@@ -12,7 +12,7 @@
 
 class CSMag {
 public:
-    bool debugMode;
+    static boolean debugMode;
     void config();
     int readx();
     int ready();
