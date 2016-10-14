@@ -20,6 +20,8 @@ In setup():
  mag.config();
 In loop():
  // Call to mag.readx()
+ 
+ Hey there!
 */
 
 int CSMag::magaddress = 0x0E; // Changed from a byte to an int (got rid of requestFrom errs). Was #define'd in example code.
