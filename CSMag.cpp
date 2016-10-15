@@ -19,12 +19,10 @@ In setup():
  Wire.begin();
  mag.config();
 In loop():
- // Call to mag.readx()
+ mag.readx()
  
- Hey there!
 */
 
-//int CSMag::magaddress = 0x0E; // Changed from a byte to an int (got rid of requestFrom errs). Was #define'd in example code.
 #define magaddress 0x0E //
 int CSMag::initX = 0;
 int CSMag::initY = 0;
@@ -36,13 +34,9 @@ void CSMag::config(void)
     debug("CSMag.config():");
     debug("\tEnabling auto-resets");
     Wire.beginTransmission(0x0E); // transmit to device 0x0E
-    debug("\tpasse transmission successfully");
     Wire.write(0x11);              // cntrl register2
-    debug("\wrote to 11");
     Wire.write(0x80);              // send 0x80, enable auto resets
-    debug("\wrote to 80");
     Wire.endTransmission();       // stop transmitting
-    debug("\ended transmission");
 
     delay(15);
     
@@ -161,10 +155,14 @@ int CSMag::readz(void)
     return zout - initZ;
 }
 
+// **************************************
+/* Calibrate Function
+ Takes 20 readings from the magnetometer
+ Finds the average
+ Sets the average as the offset for that direction (x,y,z)
+ */
+// **************************************
 void CSMag::calibrate() {
-    // Take 20 readings of the magnetometer
-    // Find average
-    // Set the value of initN to that.
     
     debug("CSMag.calibrate():");
 
@@ -185,23 +183,31 @@ void CSMag::calibrate() {
         sum = sum + xSample[i];
     }
     initX = sum / 20;
+    debug("\tAverage of x values:\n\t\t");
+    debug(String(initiX));
 
     sum = 0;
     for (int i = 0; i < 20; i++) { // Find average of Y
         sum = sum + ySample[i];
     }
     initY = sum / 20;
+    debug("\tAverage of y values:\n\t\t");
+    debug(String(initY));
 
     sum = 0;
     for (int i = 0; i < 20; i++) { // Find average of Z
         sum = sum + zSample[i];
     }
     initZ = sum / 20;
-
-
-    // Adjusted values are taken into account during the return statement of readn()
+    debug("\tAverage of z values:\n\t\t");
+    debug(String(initZ));
 }
 
+// **************************************
+/* Debug Function
+ Basically takes a string and makes a call to Serial.println();
+ */
+// **************************************
 void CSMag::debug(String s) {
     if(debugMode) {
         Serial.println(s);
