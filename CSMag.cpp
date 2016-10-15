@@ -28,6 +28,7 @@ int CSMag::initX = 0;
 int CSMag::initY = 0;
 int CSMag::initZ = 0;
 bool CSMag::debugMode = false; // override this in setup() to debug
+book CSMag::rawOutput = false; // override this to disable calibrate()
 
 void CSMag::config(void)
 {
@@ -47,7 +48,10 @@ void CSMag::config(void)
     Wire.endTransmission();       // stop transmitting
 
     delay(15);
-    calibrate(); // I am dumb
+
+    if (!rawOutput) {
+        calibrate();
+    }
 }
 
 int CSMag::readx(void)
@@ -172,9 +176,13 @@ void CSMag::calibrate() {
 
     debug("\tSampling 20 times");
     for (int i = 0; i < 20; i++) { // Take 20 readings
-        xSample[i] = readx();
-        ySample[i] = ready();
-        zSample[i] = readz();
+        int x = readx();
+        xSample[i] = x;
+        int y = ready();
+        ySample[i] = y;
+        int z= readz();
+        zSample[i] = z;
+        Serial.println(String(x) + ", " + String(y) + ", " + String(z));
     }
 
     debug("\tFinding averages");
