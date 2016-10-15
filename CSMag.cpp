@@ -24,20 +24,25 @@ In loop():
  Hey there!
 */
 
-int CSMag::magaddress = 0x0E; // Changed from a byte to an int (got rid of requestFrom errs). Was #define'd in example code.
+//int CSMag::magaddress = 0x0E; // Changed from a byte to an int (got rid of requestFrom errs). Was #define'd in example code.
+#define magaddress 0x0E //
 int CSMag::initX = 0;
 int CSMag::initY = 0;
 int CSMag::initZ = 0;
 bool CSMag::debugMode = false; // override this in setup() to debug
 
-void CSMag::config()
+void CSMag::config(void)
 {
     debug("CSMag.config():");
     debug("\tEnabling auto-resets");
-    Wire.beginTransmission(magaddress); // transmit to device 0x0E
+    Wire.beginTransmission(0x0E); // transmit to device 0x0E
+    debug("\tpasse transmission successfully");
     Wire.write(0x11);              // cntrl register2
+    debug("\wrote to 11");
     Wire.write(0x80);              // send 0x80, enable auto resets
+    debug("\wrote to 80");
     Wire.endTransmission();       // stop transmitting
+    debug("\ended transmission");
 
     delay(15);
     

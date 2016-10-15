@@ -13,13 +13,13 @@
 class CSMag {
 public:
     static boolean debugMode;
-    void config();
+    void config(void);
     int readx();
     int ready();
     int readz();
     
 private:
-    static int magaddress;
+    //static int magaddress;
     void calibrate();
     void debug(String s);
     static int initX;
