@@ -20,7 +20,7 @@ In setup():
  mag.config();
 In loop():
  mag.readx()
- 
+
 */
 
 #define magaddress 0x0E //
@@ -28,6 +28,7 @@ int CSMag::initX = 0;
 int CSMag::initY = 0;
 int CSMag::initZ = 0;
 bool CSMag::debugMode = false; // override this in setup() to debug
+book CSMag::rawOutput = false; // override this to disable calibrate()
 
 void CSMag::config(void)
 {
@@ -39,7 +40,7 @@ void CSMag::config(void)
     Wire.endTransmission();       // stop transmitting
 
     delay(15);
-    
+
     debug("\tSetting to active mode");
     Wire.beginTransmission(magaddress); // transmit to device 0x0E
     Wire.write(0x10);              // cntrl register1
@@ -47,7 +48,10 @@ void CSMag::config(void)
     Wire.endTransmission();       // stop transmitting
 
     delay(15);
-    calibrate(); // I am dumb
+
+    if (!rawOutput) { // Only calibrate if raw output is undesired
+        calibrate();
+    }
 }
 
 int CSMag::readx(void)
@@ -163,7 +167,7 @@ int CSMag::readz(void)
  */
 // **************************************
 void CSMag::calibrate() {
-    
+
     debug("CSMag.calibrate():");
 
     int xSample[20];
@@ -172,9 +176,13 @@ void CSMag::calibrate() {
 
     debug("\tSampling 20 times");
     for (int i = 0; i < 20; i++) { // Take 20 readings
-        xSample[i] = readx();
-        ySample[i] = ready();
-        zSample[i] = readz();
+        int x = readx();
+        xSample[i] = x;
+        int y = ready();
+        ySample[i] = y;
+        int z= readz();
+        zSample[i] = z;
+        Serial.println(String(x) + ", " + String(y) + ", " + String(z));
     }
 
     debug("\tFinding averages");
