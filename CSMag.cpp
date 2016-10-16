@@ -20,7 +20,7 @@ In setup():
  mag.config();
 In loop():
  mag.readx()
- 
+
 */
 
 #define magaddress 0x0E //
@@ -40,7 +40,7 @@ void CSMag::config(void)
     Wire.endTransmission();       // stop transmitting
 
     delay(15);
-    
+
     debug("\tSetting to active mode");
     Wire.beginTransmission(magaddress); // transmit to device 0x0E
     Wire.write(0x10);              // cntrl register1
@@ -49,7 +49,7 @@ void CSMag::config(void)
 
     delay(15);
 
-    if (!rawOutput) {
+    if (!rawOutput) { // Only calibrate if raw output is undesired
         calibrate();
     }
 }
@@ -167,7 +167,7 @@ int CSMag::readz(void)
  */
 // **************************************
 void CSMag::calibrate() {
-    
+
     debug("CSMag.calibrate():");
 
     int xSample[20];
