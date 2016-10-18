@@ -3,6 +3,16 @@
 // CSimu.h
 // may need float rather than int
 
+#include "Arduino.h"
+
+// From Adafruit folder (messy, yes!)
+#include "Adafruit/Adafruit_10DOF.h"
+#include "Adafruit/Adafruit_BMP085_U.h"
+#include "Adafruit/Adafruit_BMP085_U.h"
+#include "Adafruit/Adafruit_L3GD20_U.h"
+#include "Adafruit/Adafruit_LSM303_U.h"
+#include "Adafruit/Adafruit_Sensor.h"
+
 
 class CSimu {
 public:
