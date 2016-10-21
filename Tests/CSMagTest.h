@@ -13,8 +13,9 @@ public:
     int readz();
 
 private:
+    void debug(String s);
     //static int magaddress;
-    // void calibrate();
+    void calibrate();
     // void debug(String s);
     // static int initX;
     // static int initY;
