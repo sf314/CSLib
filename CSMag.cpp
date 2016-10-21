@@ -28,7 +28,7 @@ int CSMag::initX = 0;
 int CSMag::initY = 0;
 int CSMag::initZ = 0;
 bool CSMag::debugMode = false; // override this in setup() to debug
-book CSMag::rawOutput = false; // override this to disable calibrate()
+bool CSMag::rawOutput = false; // override this to disable calibrate()
 
 void CSMag::config(void)
 {
