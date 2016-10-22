@@ -8,7 +8,6 @@
 // From Adafruit folder (messy, yes!)
 #include "Adafruit/Adafruit_10DOF.h"
 #include "Adafruit/Adafruit_BMP085_U.h"
-#include "Adafruit/Adafruit_BMP085_U.h"
 #include "Adafruit/Adafruit_L3GD20_U.h"
 #include "Adafruit/Adafruit_LSM303_U.h"
 #include "Adafruit/Adafruit_Sensor.h"
@@ -16,7 +15,13 @@
 
 class CSimu {
 public:
-    static boolean debugMode();
+
+    void config();
+    static bool debugMode;
+    static bool useGroundAltitude; // if ground level is 0m altitude
+
+    void updateSensors();
+
     int accelX();
     int accelY();
     int accelZ();
@@ -29,9 +34,19 @@ public:
     int magY();
     int magZ();
 
-    int temp(); // temp or pressure?
+    float temperature(); // in C
+    float pressure(); // in kPa
+    float altitude(); // in m (assumes sea level pressure is 1013 hPa)
+
 
 private:
+    //sensors_event_t event; // meh
+    Adafruit_BMP085_Unified barometer;
+    Adafruit_L3GD20 gyro; // not the unified one
+
+    float groundAltitude;
+    float pressureVal; // for pressure() and altitude()
+
     void calibrate();
     void debug(String s);
 }
