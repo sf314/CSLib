@@ -192,7 +192,7 @@ void CSMag::calibrate() {
     }
     initX = sum / 20;
     debug("\tAverage of x values:\n\t\t");
-    debug(String(initiX));
+    debug(String(initX));
 
     sum = 0;
     for (int i = 0; i < 20; i++) { // Find average of Y
