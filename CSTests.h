@@ -1,5 +1,5 @@
 // Library for Creating tests
-// Test classes have all functions of regular classes, 
+// Test classes have all functions of regular classes,
 // but they return dummy values (and don't access stuff like I2C,
 // so you can run basic tests from just the Arduino itself
 
